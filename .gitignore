@@ -15,10 +15,6 @@ managed_components/
 **/managed_components/
 .component_hash
 
-# Note: recommended to COMMIT dependencies.lock for reproducible dependency resolution.
-# (So: do NOT ignore it.)
-# dependencies.lock
-
 # ===== Python caches (ESP-IDF tooling/CI) =====
 __pycache__/
 .pytest_cache/
@@ -37,3 +33,5 @@ __pycache__/
 # ===== Misc tooling =====
 compile_commands.json
 
+# ===== Downloaded examples =====
+examples/
