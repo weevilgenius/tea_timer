@@ -21,6 +21,43 @@ Primary goals:
 - Do not add new dependencies unless necessary; if adding one, explain why and pin it.
 - Keep the project buildable at each step; run the verification commands listed below.
 
+## Hardware
+
+The physical device is a M5Stack Dial v1.1 based on the ESP32-S3FN8@Dual-core Xtensa LX7
+SoC. It has a touch screen, rotary encoder, and many other features documented
+[here](https://docs.m5stack.com/en/core/M5Dial%20V1.1). Many of the GPIO pins are defined as
+macros in bsp/m5dial.h (located in managed_components/espressif__m5dial/include/bsp/m5dial.h).
+
+Screen Driver: GC9A01-SPI
+GPIO4 - LCD_RS
+GPIO5 - LCD_MOSI
+GPIO6 - LCD_SCK
+GPIO7 - LCD_CS
+GPIO8 - LCD_RESET
+GPIO9 - LCD_BL
+
+Touch Driver: FT3267
+GPIO11 - TP_SDA
+GPIO12 - TP_SCL
+GPIO14 - TP_INT
+
+I2C: RTC8563
+GPIO12 - SCL
+GPIO11 - SDA
+
+RFID: WS1850S
+GPIO12 - SCL
+GPIO11 - SDA
+GPIO8 - RST
+GPIO10 - IRQ
+
+Rotary Encoder:
+GPIO40 - Encoder B
+GPIO41 - Encoder A
+
+Other:
+GPIO3 - Buzzer
+
 ## Development Environment
 
 ### Required Tools (macOS / Apple Silicon)
@@ -87,12 +124,26 @@ Guidelines:
 
 Managed components live under `managed_components/` and should not be modified directly.
 
+### LVGL
+
+LVGL is available. `bsp_display_start()` initializes display, touch and LVGL.
+All LVGL calls must be protected using lock/unlock:
+
+```c
+/* Wait until other tasks finish screen operations */
+bsp_display_lock(0);
+/* safe to perform LVGL operations */
+lv_obj_t *screen = lv_disp_get_scr_act(disp_handle);
+lv_obj_t *label = lv_label_create(screen);
+/* Unlock after screen operations are done */
+bsp_display_unlock();
+```
 
 ## Coding Conventions
 
 ### Language / Style
 
-* C or C++ is acceptable; match the existing code style in the repo.
+* C is preferred over C++; match the existing code style in the repo.
 * Prefer clear, explicit types and error handling.
 * Avoid dynamic allocation in hot paths; keep memory usage predictable.
 
@@ -112,4 +163,3 @@ Managed components live under `managed_components/` and should not be modified d
 
 * If using tasks, define clear ownership of shared state.
 * Protect shared mutable state with a mutex or message passing; prefer queues/events when appropriate.
-* Do not call LVGL from multiple tasks unless the project has an established locking strategy.
