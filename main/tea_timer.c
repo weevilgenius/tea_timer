@@ -7,12 +7,28 @@
 
 #include "bsp/esp-bsp.h"
 #include "lvgl.h"
+#include "iot_button.h"
+#include "button_gpio.h"
 
 static const char *TAG = "tea_timer";
 
 /* PCNT handles */
 static pcnt_unit_handle_t s_pcnt_unit = NULL;
 static int s_last_count = 0;
+
+/* UI state */
+static lv_obj_t *s_screen = NULL;
+static lv_obj_t *s_count_label = NULL;
+static int s_color_index = 0;
+
+/* Background colors to cycle through */
+static const lv_color_t s_colors[] = {
+  LV_COLOR_MAKE(255, 255, 255), /* White (default) */
+  LV_COLOR_MAKE(255, 0, 0),     /* Red */
+  LV_COLOR_MAKE(0, 255, 0),     /* Green */
+  LV_COLOR_MAKE(0, 0, 255),     /* Blue */
+};
+#define NUM_COLORS (sizeof(s_colors) / sizeof(s_colors[0]))
 
 /* Initialize rotary encoder using hardware PCNT */
 void encoder_init(void) {
@@ -72,6 +88,34 @@ int encoder_get_count(void) {
   return count;
 }
 
+/* Button callback */
+static void button_press_cb(void *button_handle, void *usr_data) {
+  ESP_LOGI(TAG, "Faceplate button pressed!");
+
+  /* Not supposed to block in a button callback */
+  if (!bsp_display_lock(5)) { return; }
+
+  /* Cycle to next background color */
+  s_color_index = (s_color_index + 1) % NUM_COLORS;
+  lv_obj_set_style_bg_color(s_screen, s_colors[s_color_index], 0);
+  bsp_display_unlock();
+}
+
+/* Initialize faceplate button */
+void button_init(void) {
+  const button_config_t btn_cfg = {0};  /* Use defaults */
+  const button_gpio_config_t gpio_cfg = {
+    .gpio_num = BSP_BTN_PRESS,
+    .active_level = 0,  /* Active low */
+  };
+
+  button_handle_t btn = NULL;
+  ESP_ERROR_CHECK(iot_button_new_gpio_device(&btn_cfg, &gpio_cfg, &btn));
+  ESP_ERROR_CHECK(iot_button_register_cb(btn, BUTTON_SINGLE_CLICK, NULL, button_press_cb, NULL));
+
+  ESP_LOGI(TAG, "Faceplate button initialized");
+}
+
 /* Application start */
 void app_main(void) {
 
@@ -85,12 +129,20 @@ void app_main(void) {
   /* Backlight is enabled separately */
   bsp_display_backlight_on();
 
-  /* Create a simple "Hello" label */
+  /* Create UI elements */
   bsp_display_lock(0); /* 0 = block indefinitely */
   {
-    lv_obj_t *label = lv_label_create(lv_scr_act());
-    lv_label_set_text(label, "Hello, Dial!");
-    lv_obj_center(label);
+    s_screen = lv_scr_act();
+
+    /* "Hello, Dial!" label */
+    lv_obj_t *hello_label = lv_label_create(s_screen);
+    lv_label_set_text(hello_label, "Hello, Dial!");
+    lv_obj_align(hello_label, LV_ALIGN_CENTER, 0, -15);
+
+    /* Encoder count label */
+    s_count_label = lv_label_create(s_screen);
+    lv_label_set_text(s_count_label, "Count: 0");
+    lv_obj_align(s_count_label, LV_ALIGN_CENTER, 0, 15);
   }
   bsp_display_unlock();
 
@@ -98,6 +150,9 @@ void app_main(void) {
 
   /* Initialize rotary encoder with hardware PCNT */
   encoder_init();
+
+  /* Initialize faceplate button */
+  button_init();
 
   /* Main loop - poll encoder and handle events */
   while (1) {
@@ -110,6 +165,11 @@ void app_main(void) {
         ESP_LOGI(TAG, "left, count=%d", count);
       }
       s_last_count = count;
+
+      /* Update display */
+      bsp_display_lock(0);
+      lv_label_set_text_fmt(s_count_label, "Count: %d", count);
+      bsp_display_unlock();
     }
     vTaskDelay(pdMS_TO_TICKS(10));
   }
