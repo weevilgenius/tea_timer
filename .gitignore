@@ -1,0 +1,39 @@
+# ===== ESP-IDF build output =====
+build/
+build_*_*/
+
+# ===== ESP-IDF generated config =====
+# If you want reproducible config, prefer committing sdkconfig.defaults*
+# and ignoring the generated sdkconfig (ESP-IDF supports this workflow).
+sdkconfig
+sdkconfig.old
+sdkconfig.*.old
+
+# ===== ESP-IDF Component Manager =====
+# Managed components are usually NOT versioned.
+managed_components/
+**/managed_components/
+.component_hash
+
+# Note: recommended to COMMIT dependencies.lock for reproducible dependency resolution.
+# (So: do NOT ignore it.)
+# dependencies.lock
+
+# ===== Python caches (ESP-IDF tooling/CI) =====
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# ===== macOS =====
+.DS_Store
+
+# ===== VS Code (keep sharable configs, ignore the rest) =====
+.vscode/*
+!.vscode/launch.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/extensions.json
+
+# ===== Misc tooling =====
+compile_commands.json
+
