@@ -23,7 +23,7 @@ Primary goals:
 
 ## Hardware
 
-The physical device is a M5Stack Dial v1.1 based on the ESP32-S3FN8@Dual-core Xtensa LX7
+The physical device is a M5Stack Dial v1.1 based on the ESP32-S3FN8 Dual-core Xtensa LX7
 SoC. It has a touch screen, rotary encoder, and many other features documented
 [here](https://docs.m5stack.com/en/core/M5Dial%20V1.1). Many of the GPIO pins are defined as
 macros in bsp/m5dial.h (located in managed_components/espressif__m5dial/include/bsp/m5dial.h).
@@ -71,11 +71,8 @@ Agents should avoid suggesting alternate build systems. This is a CMake/Ninja ES
 
 ### Environment Setup
 
-Agents should assume the developer has ESP-IDF installed under `~/esp/esp-idf` and uses:
-
-```sh
-. ~/esp/esp-idf/export.sh
-```
+Agents should assume the developer has ESP-IDF installed under `~/esp/esp-idf` and has exported
+IDF variables in the local terminal using `. ~/esp/esp-idf/export.sh`
 
 Do not hardcode absolute paths in code or CMake. Use ESP-IDF’s standard variables and component patterns.
 
@@ -85,7 +82,7 @@ All commands are run from the project root after sourcing `export.sh`.
 
 * Build: `idf.py build`
 * Flash + serial monitor: `idf.py flash monitor`
-* Clean: `idf.py fullclean`
+* Clean: `idf.py clean`
 * Configure: `idf.py menuconfig`
 
 
@@ -113,7 +110,7 @@ is exported (OPENOCD_SCRIPTS should be set by `export.sh`).
 
 ### BSP / Hardware Abstraction
 
-This project uses the ESP-IDF Board Support Package for M5Dial:
+This project uses the ESP-IDF Board Support Package (BSP) for M5Dial:
   * Dependency is managed via ESP-IDF Component Manager (`idf.py add-dependency ...`).
   * Use BSP helpers to initialize hardware instead of re-implementing low-level drivers.
 
@@ -127,7 +124,7 @@ Managed components live under `managed_components/` and should not be modified d
 ### LVGL
 
 LVGL is available. `bsp_display_start()` initializes display, touch and LVGL.
-All LVGL calls must be protected using lock/unlock:
+BSP requires that all LVGL calls must be protected using lock/unlock:
 
 ```c
 /* Wait until other tasks finish screen operations */
@@ -138,6 +135,9 @@ lv_obj_t *label = lv_label_create(screen);
 /* Unlock after screen operations are done */
 bsp_display_unlock();
 ```
+
+Because of this, using LVGL should either be done via an event queue or a timer that updates
+based on global UI state.
 
 ## Coding Conventions
 

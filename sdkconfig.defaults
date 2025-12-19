@@ -1,1 +1,4 @@
 CONFIG_IDF_TARGET="esp32s3"
+
+# Enable large font for tea timer display
+CONFIG_LV_FONT_MONTSERRAT_48=y
