@@ -92,7 +92,7 @@ void view_update(view_state_t state, uint32_t time_secs, uint8_t progress) {
     switch (state) {
         case VIEW_STATE_SETUP:
             arc_color = COLOR_SETUP;
-            status_text = "SET TIME";
+            status_text = "BREW TIME";
             break;
         case VIEW_STATE_RUNNING:
             arc_color = COLOR_RUNNING;
@@ -100,7 +100,7 @@ void view_update(view_state_t state, uint32_t time_secs, uint8_t progress) {
             break;
         case VIEW_STATE_ALARM:
             arc_color = COLOR_ALARM;
-            status_text = "DONE!";
+            status_text = "TEA IS READY!";
             break;
         case VIEW_STATE_SLEEP:
             /* Sleep state handled by backlight, not UI */

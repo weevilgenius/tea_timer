@@ -55,7 +55,7 @@ typedef struct {
 /**
  * Timer configuration constants
  */
-#define LOGIC_MIN_TIME_SECS   30   /* 1 minute minimum */
+#define LOGIC_MIN_TIME_SECS   60   /* 1 minute minimum */
 #define LOGIC_MAX_TIME_SECS   600  /* 10 minutes maximum */
 #define LOGIC_TIME_STEP_SECS  60   /* 1 minute increments */
 #define LOGIC_ENCODER_DIVISOR 4    /* 4 counts per detent */

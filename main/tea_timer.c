@@ -45,8 +45,8 @@ static QueueHandle_t s_event_queue = NULL;
 static esp_timer_handle_t s_tick_timer = NULL;
 static esp_timer_handle_t s_fast_timer = NULL;
 
-/* Inactivity timeout (2 minutes) */
-#define INACTIVITY_TIMEOUT_MS  (120 * 1000)
+/* Inactivity timeout (1 minutes) */
+#define INACTIVITY_TIMEOUT_MS  (60 * 1000)
 static uint32_t s_last_activity_ms = 0;
 
 /**
