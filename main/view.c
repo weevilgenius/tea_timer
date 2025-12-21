@@ -3,6 +3,9 @@
 #include "lvgl.h"
 #include "esp_log.h"
 
+/* Set to 1 to use scaled monospace font (stable width), 0 for proportional Montserrat */
+#define USE_MONOSPACED_FONT 0
+
 static const char *TAG = "view";
 
 /* Display dimensions (M5Dial is 240x240 circular) */
@@ -60,7 +63,16 @@ void view_init(void) {
     /* Create time label - center, large font */
     s_time_label = lv_label_create(s_screen);
     ESP_LOGI(TAG, "Created time label: %p", s_time_label);
+#if USE_MONOSPACED_FONT
+    /* Scaled monospace font for stable width during countdown */
+    lv_obj_set_style_text_font(s_time_label, &lv_font_unscii_16, 0);
+    lv_obj_set_style_transform_zoom(s_time_label, 512, 0);  /* 2x scale */
+    lv_obj_set_style_transform_pivot_x(s_time_label, LV_PCT(50), 0);
+    lv_obj_set_style_transform_pivot_y(s_time_label, LV_PCT(50), 0);
+#else
+    /* Proportional font - may shift slightly during countdown */
     lv_obj_set_style_text_font(s_time_label, &lv_font_montserrat_48, 0);
+#endif
     lv_obj_set_style_text_color(s_time_label, COLOR_TEXT, 0);
     lv_label_set_text(s_time_label, "5:00");
     lv_obj_center(s_time_label);
