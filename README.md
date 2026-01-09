@@ -80,6 +80,25 @@ Or combined:
 idf.py openocd gdbtui monitor
 ```
 
+## Troubleshooting
+
+### Touch I2C Errors (M5Dial v1.1)
+
+Some M5Dial v1.1 units may lack pull-up resistors on the shared I2C bus used by
+touch, RTC, and RFID. This can cause spurious "unexpected nack" I2C errors that
+crash the application, even though this project doesn't use the touchscreen.
+
+See: https://github.com/m5stack/M5Dial/issues/17
+
+If you see crashes related to I2C errors, you can apply the included patch which
+changes I2C errors encountered when reading the touch interface to become warnings
+instead:
+
+```sh
+patch -d managed_components/espressif__esp_lvgl_port -p1 < patches/esp_lvgl_port_touch_error_handling.patch
+idf.py build
+```
+
 ## Project Structure
 
 ```

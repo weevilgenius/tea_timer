@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(idf.py build:*)"
+      "Bash(idf.py build:*)",
+      "WebSearch",
+      "WebFetch(domain:docs.espressif.com)",
+      "Bash(git show:*)"
     ]
   }
 }
