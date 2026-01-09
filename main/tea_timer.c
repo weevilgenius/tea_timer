@@ -14,10 +14,12 @@
 #include "view.h"
 #include "logic.h"
 
-// uncomment to rotate UI: 90, 180, or 270 degrees
+// Uncomment to rotate UI: 90, 180, or 270 degrees. Useful if you need to mount the
+// device in a non-standard orientation.
 //#define ROTATE_UI 90
 
-#define USE_BUZZER 0
+// Comment out to disable sound output when the alarm triggers
+#define USE_BUZZER 1
 
 #if USE_BUZZER
 #include "buzzer.h"
@@ -320,7 +322,7 @@ void app_main(void) {
       if (actions & ACTION_ALARM_START) {
         ESP_LOGI(TAG, "Alarm started");
 #if USE_BUZZER
-        buzzer_on();
+        buzzer_play_alarm();
 #endif
         /* Start 2Hz fast timer for flashing (500ms) */
         esp_timer_start_periodic(s_fast_timer, 500 * 1000);
@@ -329,9 +331,7 @@ void app_main(void) {
       if (actions & ACTION_ALARM_STOP) {
         ESP_LOGI(TAG, "Alarm stopped");
 #if USE_BUZZER
-        buzzer_off();
-        /* Re-enable backlight in case buzzer LEDC interfered */
-        bsp_display_backlight_on();
+        buzzer_stop();
 #endif
         esp_timer_stop(s_fast_timer);
       }

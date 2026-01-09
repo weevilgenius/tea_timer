@@ -32,6 +32,11 @@ cd ~/esp/esp-idf
 ./install.sh esp32s3
 ```
 
+## Configure
+
+There are some features such as screen rotation and disabling buzzer output that can
+be tweaked by editing the top of `main/tea_timer.c`.
+
 ## Building
 
 1. Clone this repository
