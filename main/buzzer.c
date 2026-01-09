@@ -13,7 +13,7 @@ static const char *TAG = "buzzer";
 
 /* LEDC configuration */
 #define BUZZER_LEDC_TIMER   LEDC_TIMER_1
-#define BUZZER_LEDC_CHANNEL LEDC_CHANNEL_1
+#define BUZZER_LEDC_CHANNEL LEDC_CHANNEL_2 /* BSP backlight uses channel 1 */
 #define BUZZER_LEDC_MODE    LEDC_LOW_SPEED_MODE
 
 /* Single note */
