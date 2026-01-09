@@ -1,7 +1,7 @@
 #include "view.h"
-#include "bsp/esp-bsp.h"
-#include "lvgl.h"
-#include "esp_log.h"
+#include <bsp/esp-bsp.h>
+#include <lvgl.h>
+#include <esp_log.h>
 
 /* Set to 1 to use scaled monospace font (stable width), 0 for proportional Montserrat */
 #define USE_MONOSPACED_FONT 0

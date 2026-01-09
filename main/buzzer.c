@@ -1,6 +1,7 @@
 #include "buzzer.h"
-#include "driver/ledc.h"
-#include "esp_log.h"
+#include <driver/gpio.h>
+#include <driver/ledc.h>
+#include <esp_log.h>
 
 static const char *TAG = "buzzer";
 

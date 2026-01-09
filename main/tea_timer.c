@@ -1,16 +1,15 @@
-#include "bsp/esp-bsp.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/queue.h"
+#include <bsp/esp-bsp.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include <freertos/queue.h>
 
-#include "esp_log.h"
-#include "esp_timer.h"
-#include "driver/pulse_cnt.h"
-#include "driver/gpio.h"
+#include <esp_log.h>
+#include <esp_timer.h>
+#include <driver/pulse_cnt.h>
 
-#include "lvgl.h"
-#include "iot_button.h"
-#include "button_gpio.h"
+#include <lvgl.h>
+#include <iot_button.h>
+#include <button_gpio.h>
 
 #include "view.h"
 #include "logic.h"

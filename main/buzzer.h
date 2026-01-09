@@ -1,7 +1,7 @@
 #ifndef BUZZER_H
 #define BUZZER_H
 
-#include "esp_err.h"
+#include <esp_err.h>
 
 /**
  * Initialize the buzzer using LEDC PWM.
