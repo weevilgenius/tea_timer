@@ -31,14 +31,14 @@ typedef enum {
  */
 typedef enum {
     ACTION_NONE           = 0,
-    ACTION_UPDATE_UI      = (1 << 0),
-    ACTION_START_TIMER    = (1 << 1),
-    ACTION_STOP_TIMER     = (1 << 2),
-    ACTION_BUZZER_ON      = (1 << 3),
-    ACTION_BUZZER_OFF     = (1 << 4),
-    ACTION_BACKLIGHT_ON   = (1 << 5),
-    ACTION_BACKLIGHT_OFF  = (1 << 6),
-    ACTION_TOGGLE_FLASH   = (1 << 7)
+    ACTION_UPDATE_UI      = (1 << 0),  /* Refresh the display */
+    ACTION_START_TIMER    = (1 << 1),  /* Start the 1Hz countdown timer */
+    ACTION_STOP_TIMER     = (1 << 2),  /* Stop the 1Hz countdown timer */
+    ACTION_ALARM_START    = (1 << 3),  /* Start alarm: buzzer (if enabled) and flashing */
+    ACTION_ALARM_STOP     = (1 << 4),  /* Stop alarm: buzzer and flashing */
+    ACTION_BACKLIGHT_ON   = (1 << 5),  /* Turn display backlight on */
+    ACTION_BACKLIGHT_OFF  = (1 << 6),  /* Turn display backlight off */
+    ACTION_TOGGLE_FLASH   = (1 << 7)   /* Toggle alarm flash state */
 } logic_action_t;
 
 /**

@@ -94,7 +94,7 @@ static uint32_t process_running(app_state_t *state, logic_event_t event, int32_t
                     /* Timer complete - go to alarm */
                     state->state = STATE_ALARM;
                     state->alarm_flash_on = true;
-                    actions |= ACTION_STOP_TIMER | ACTION_BUZZER_ON;
+                    actions |= ACTION_STOP_TIMER | ACTION_ALARM_START;
                 }
             }
             break;
@@ -127,7 +127,7 @@ static uint32_t process_alarm(app_state_t *state, logic_event_t event, int32_t v
             state->alarm_flash_on = false;
             state->last_encoder_count = value;
             /* Explicitly turn backlight on - buzzer LEDC can interfere */
-            actions = ACTION_UPDATE_UI | ACTION_BUZZER_OFF | ACTION_BACKLIGHT_ON;
+            actions = ACTION_UPDATE_UI | ACTION_ALARM_STOP | ACTION_BACKLIGHT_ON;
             break;
 
         case EVT_TICK_FAST:

@@ -317,8 +317,8 @@ void app_main(void) {
         esp_timer_stop(s_tick_timer);
       }
 
-      if (actions & ACTION_BUZZER_ON) {
-        ESP_LOGI(TAG, "Buzzer ON (alarm)");
+      if (actions & ACTION_ALARM_START) {
+        ESP_LOGI(TAG, "Alarm started");
 #if USE_BUZZER
         buzzer_on();
 #endif
@@ -326,8 +326,8 @@ void app_main(void) {
         esp_timer_start_periodic(s_fast_timer, 500 * 1000);
       }
 
-      if (actions & ACTION_BUZZER_OFF) {
-        ESP_LOGI(TAG, "Buzzer OFF");
+      if (actions & ACTION_ALARM_STOP) {
+        ESP_LOGI(TAG, "Alarm stopped");
 #if USE_BUZZER
         buzzer_off();
         /* Re-enable backlight in case buzzer LEDC interfered */
