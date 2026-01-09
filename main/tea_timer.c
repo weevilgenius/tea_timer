@@ -15,6 +15,9 @@
 #include "view.h"
 #include "logic.h"
 
+// uncomment to rotate UI: 90, 180, or 270 degrees
+//#define ROTATE_UI 90
+
 #define USE_BUZZER 0
 
 #if USE_BUZZER
@@ -195,6 +198,18 @@ void app_main(void) {
     ESP_LOGE(TAG, "bsp_display_start() failed");
     return;
   }
+
+#ifdef ROTATE_UI
+#if ROTATE_UI == 90
+  bsp_display_rotate(disp, LV_DISPLAY_ROTATION_90);
+#elif ROTATE_UI == 180
+  bsp_display_rotate(disp, LV_DISPLAY_ROTATION_180);
+#elif ROTATE_UI == 270
+  bsp_display_rotate(disp, LV_DISPLAY_ROTATION_270);
+#elif ROTATE_UI != 0
+  #error "ROTATE_UI must be 0, 90, 180, or 270"
+#endif
+#endif
 
   /* Backlight is enabled separately */
   bsp_display_backlight_on();
