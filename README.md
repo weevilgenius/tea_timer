@@ -1,7 +1,8 @@
 # Tea Timer
 
-A kitchen/tea timer application for the [M5Stack Dial v1.1](https://shop.m5stack.com/products/m5stack-dial-v1-1),
-built with ESP-IDF and LVGL.
+A kitchen/tea timer application for the [M5Stack Dial](https://shop.m5stack.com/products/m5stack-dial-v1-1),
+built with ESP-IDF and LVGL. It is compatible with both the 1.0 and 1.1 hardware
+versions.
 
 ## Hardware
 
@@ -84,14 +85,14 @@ idf.py openocd gdbtui monitor
 
 ### Touch I2C Errors (M5Dial v1.1)
 
-Some M5Dial v1.1 units may lack pull-up resistors on the shared I2C bus used by
+Some M5Dial units may lack pull-up resistors on the shared I2C bus used by
 touch, RTC, and RFID. This can cause spurious "unexpected nack" I2C errors that
 crash the application, even though this project doesn't use the touchscreen.
 
 See: https://github.com/m5stack/M5Dial/issues/17
 
 If you see crashes related to I2C errors, you can apply the included patch which
-changes I2C errors encountered when reading the touch interface to become warnings
+converts any I2C errors encountered when reading the touch interface to warnings
 instead:
 
 ```sh
@@ -113,6 +114,7 @@ idf.py build
 
 ## Links
 
-- [M5Stack Dial v1.1 Documentation](https://docs.m5stack.com/en/core/M5Dial%20V1.1)
+- [M5Stack Dial Documentation - v1.0](https://docs.m5stack.com/en/core/M5Dial)
+- [M5Stack Dial Documentation - v1.1](https://docs.m5stack.com/en/core/M5Dial%20V1.1)
 - [espressif/m5dial BSP](https://components.espressif.com/components/espressif/m5dial/versions/3.0.1/readme?language=en)
 - [LVGL Documentation](https://docs.lvgl.io/master/)

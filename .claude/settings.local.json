@@ -4,7 +4,8 @@
       "Bash(idf.py build:*)",
       "WebSearch",
       "WebFetch(domain:docs.espressif.com)",
-      "Bash(git show:*)"
+      "Bash(git show:*)",
+      "WebFetch(domain:docs.m5stack.com)"
     ]
   }
 }
