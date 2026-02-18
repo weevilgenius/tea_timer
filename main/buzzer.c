@@ -24,11 +24,11 @@ typedef struct {
 
 /* Alarm melody: will be played in sequence with no pauses */
 static const buzzer_note_t s_melody[] = {
-    { 523,  120 },  /* C5 */
-    { 659,  120 },  /* E5 */
-    { 784,  120 },  /* G5 */
-    { 1047, 120 },  /* C6 */
-    { 1319, 120 },  /* E6 */
+    { 587,  326 },  /* D5 quarter */
+    { 698,  489 },  /* F5 dotted quarter */
+    { 784,  163 },  /* G5 eighth */
+    { 659,  163 },  /* E5 eighth */
+    { 523,  163 },  /* C5 eighth */
 };
 static const size_t s_melody_len = sizeof(s_melody) / sizeof(s_melody[0]);
 
